@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import Link from "next/link";
 
 export default function SnakeGame() {
   const canvasRef = useRef(null);
@@ -25,58 +26,61 @@ export default function SnakeGame() {
     }
   }, [gameOver]);
 
-  const handleKeyDown = (e) => {
-    if (directionChanged) return;
-    const key = e.key;
-    // Debug log
-    // console.log('Pressed key:', key);
-    if (
-      key === "ArrowUp" ||
-      key === "w" ||
-      key === "W" ||
-      key === "ArrowDown" ||
-      key === "s" ||
-      key === "S" ||
-      key === "ArrowLeft" ||
-      key === "a" ||
-      key === "A" ||
-      key === "ArrowRight" ||
-      key === "d" ||
-      key === "D"
-    ) {
-      e.preventDefault();
-    }
-    if (
-      (key === "ArrowUp" || key === "w" || key === "W") &&
-      direction !== "DOWN"
-    ) {
-      setDirection("UP");
-      setDirectionChanged(true);
-    } else if (
-      (key === "ArrowDown" || key === "s" || key === "S") &&
-      direction !== "UP"
-    ) {
-      setDirection("DOWN");
-      setDirectionChanged(true);
-    } else if (
-      (key === "ArrowLeft" || key === "a" || key === "A") &&
-      direction !== "RIGHT"
-    ) {
-      setDirection("LEFT");
-      setDirectionChanged(true);
-    } else if (
-      (key === "ArrowRight" || key === "d" || key === "D") &&
-      direction !== "LEFT"
-    ) {
-      setDirection("RIGHT");
-      setDirectionChanged(true);
-    }
-  };
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (directionChanged) return;
+      const key = e.key;
+      // Debug log
+      // console.log('Pressed key:', key);
+      if (
+        key === "ArrowUp" ||
+        key === "w" ||
+        key === "W" ||
+        key === "ArrowDown" ||
+        key === "s" ||
+        key === "S" ||
+        key === "ArrowLeft" ||
+        key === "a" ||
+        key === "A" ||
+        key === "ArrowRight" ||
+        key === "d" ||
+        key === "D"
+      ) {
+        e.preventDefault();
+      }
+      if (
+        (key === "ArrowUp" || key === "w" || key === "W") &&
+        direction !== "DOWN"
+      ) {
+        setDirection("UP");
+        setDirectionChanged(true);
+      } else if (
+        (key === "ArrowDown" || key === "s" || key === "S") &&
+        direction !== "UP"
+      ) {
+        setDirection("DOWN");
+        setDirectionChanged(true);
+      } else if (
+        (key === "ArrowLeft" || key === "a" || key === "A") &&
+        direction !== "RIGHT"
+      ) {
+        setDirection("LEFT");
+        setDirectionChanged(true);
+      } else if (
+        (key === "ArrowRight" || key === "d" || key === "D") &&
+        direction !== "LEFT"
+      ) {
+        setDirection("RIGHT");
+        setDirectionChanged(true);
+      }
+    },
+    [direction, directionChanged]
+  );
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [direction]);
+  }, [handleKeyDown]);
 
   useEffect(() => {
     if (eatAnim) {
@@ -134,7 +138,10 @@ export default function SnakeGame() {
               x: Math.floor(Math.random() * (gridSize - 2 * margin)) + margin,
               y: Math.floor(Math.random() * (gridSize - 2 * margin)) + margin,
             };
-          } while (prevSnake.some((s) => s.x === newFood.x && s.y === newFood.y) || (head.x === newFood.x && head.y === newFood.y));
+          } while (
+            prevSnake.some((s) => s.x === newFood.x && s.y === newFood.y) ||
+            (head.x === newFood.x && head.y === newFood.y)
+          );
           setFood(newFood);
           setEatAnim(true); // trigger animation
         } else {
@@ -212,7 +219,7 @@ export default function SnakeGame() {
   useEffect(() => {
     if (!gameOver) return;
     const handleRestart = (e) => {
-      if (e.key === 'Tab' || e.metaKey) return;
+      if (e.key === "Tab" || e.metaKey) return;
       if (gameOverTime && Date.now() - gameOverTime < 500) return;
       setScore(0);
       setGameOver(false);
@@ -292,9 +299,9 @@ export default function SnakeGame() {
             Press any key after a game over to restart.
           </span>
         </div>
-        <a href="/" className="mt-2 back-home-btn">
+        <Link href="/" className="mt-2 back-home-btn">
           Back to Home
-        </a>
+        </Link>
       </div>
     </div>
   );
