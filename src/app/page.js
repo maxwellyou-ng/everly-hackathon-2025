@@ -9,24 +9,15 @@ export default function Home() {
           Snake Game by AI Angels
         </h1>
         <p className="text-lg text-foreground/80">
-          Welcome to the AI Angels Snake Game! Guide your snake to eat the food,
-          grow longer, and achieve the highest score you can. Avoid running into
-          the walls or yourself!
+          Guide your snake, eat hearts, and try to set a new high score. Avoid
+          the walls and your own tail!
         </p>
         <div className="controls-info text-md text-foreground/80 bg-white/40 rounded-lg p-4 shadow-sm">
           <strong>Controls:</strong>
           <br />
           <span className="controls-keys font-semibold">Arrow keys</span> or{" "}
-          <span className="controls-keys font-semibold">WASD</span> to move the
-          snake.
-          <br />
-          <span className="controls-tip">
-            Press any key after a game over to restart.
-          </span>
+          <span className="controls-keys font-semibold">WASD</span> to move.
         </div>
-        <p className="text-md text-foreground/80">
-          Click the button below to launch and play the game in your browser!
-        </p>
         <Link href="/snake">
           <button className="mt-4 px-6 py-3 rounded-lg bg-foreground text-background font-bold text-lg shadow-lg hover:bg-opacity-80 transition">
             Play Snake Game
